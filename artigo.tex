@@ -1,0 +1,206 @@
+\documentclass{pssbmac}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% POR FAVOR, NÃO FAÇA MUDANÇAS NESSE PADRÃO QUE ACARRETEM  EM
+%% ALTERAÇÃO NA FORMATAÇÃO FINAL DO TEXTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% POR FAVOR, ESCOLHA CONFORME O CASO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[brazil]{babel} % texto em Português
+%\usepackage[english]{babel} % texto em Inglês
+
+%\usepackage[latin1]{inputenc} % acentuação em Português ISO-8859-1
+\usepackage[utf8]{inputenc} % acentuação em Português UTF-8
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% POR FAVOR, NÃO ALTERAR
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[UTF8]{ctex}  % 主要宏包
+\usepackage[T1]{fontenc}
+\usepackage{float}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{indentfirst}
+\usepackage{amsmath, amsfonts, amssymb, amsthm, mathtools}
+\usepackage{url}
+\usepackage{csquotes}
+% Ambientes pré-definidos
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{teorema}{Teorema}[section]
+\newtheorem{lema}{Lema}[section]
+\newtheorem{prop}{Proposi\c{c}\~ao}[section]
+\newtheorem{defi}{Defini\c{c}\~ao}[section]
+\newtheorem{obs}{Observa\c{c}\~ao}[section]
+\newtheorem{cor}{Corol\'ario}[section]
+
+% ref bibliográficas
+\usepackage[backend=biber, style=numeric-comp, maxnames=50]{biblatex}
+\addbibresource{refs.bib}
+\DeclareTextFontCommand{\emph}{\boldmath\bfseries}
+\DefineBibliographyStrings{brazil}{phdthesis = {Tese de doutorado}}
+\DefineBibliographyStrings{brazil}{mathesis = {Disserta\c{c}\~{a}o de mestrado}}
+\DefineBibliographyStrings{english}{mathesis = {Master dissertation}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TÍTULO E AUTORAS(ES)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{《Linear Convergence Rate in Convex Setup is Possible!》一文的问题回答}
+
+\author{
+{\large 姓名学号}\\ {\large 姓名学号}\\  {\large 姓名学号}\\   
+}
+\criartitulo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TEXTO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{abstract}
+{\bf Resumo}. Este é o padrão (formato \LaTeX{} apenas) para a submissão de trabalhos da Categoria 2 do CNMAC, destinados à divulgação de pesquisas com resultados conclusivos. \emph{Nesta categoria, os trabalhos devem ser submetidos em Português ou Inglês, em forma de artigo com no mínimo 5 e no máximo 7 páginas, incluindo-se as referências bibliográficas.} Os \emph{trabalhos submetidos} que \emph{não estiverem de acordo com o formato} apresentado por esse padrão \emph{serão rejeitados} pelo Comitê Editorial do evento, sem análise do mérito científico.  
+
+\noindent
+{\bf Palavras-chave}. Instruções, \LaTeX, Trabalhos Completos, SBMAC, CNMAC  (entre 3-6 palavras-chave)
+\end{abstract}
+
+\section{问题一：论文解决的问题}
+
+本论文试图填补的缺口是：在 $(L_0, L_1)$-smoothness 的光滑条件下，为常见优化算法建立新的线性收敛理论，并解释实际机器学习训练中常见的收敛行为。具体的来说包含以下贡献：
+
+
+\subsection{}
+
+
+\section{问题二：文章的假设条件}
+
+\subsection{形式化表述}
+
+\subsubsection{L-smoothness（Lipschitz 梯度）}
+
+函数 $f: \mathbb{R}^d \to \mathbb{R}$ 被称为 L-smooth，如果其梯度 $\nabla f$ 是 L-Lipschitz 连续的，即对任意 $x, y \in \mathbb{R}^d$ 有
+$$
+\|\nabla f(x) - \nabla f(y)\| \leq L \|x - y\|
+$$
+若其有二阶梯度，那么有
+$$
+\|\nabla^2 f(x)\| \leq L
+$$
+
+\subsubsection{$(L_0, L_1)$-smoothness}
+函数 $f$ 满足 $(L_0, L_1)$-smoothness，如果对任意 $x, y \in \mathbb{R}^d$，满足 $ \| x-y\|\leq \frac{1}{L_1} $，有
+$$
+\|\nabla f(x) - \nabla f(y)\| \leq (L_0 + L_1 \|\nabla f(x)\|) \|x - y\|
+$$
+
+\subsection{假设区别}
+\begin{table}[H]
+\caption{ {\small $(L_0, L_1)$-smoothness 假设和 L-smoothness 假设的不同}}
+\centering
+\begin{tabular}{ccc}
+\hline
+性质  & L-smoothness 假设 & \small $(L_0, L_1)$-smoothness 假设\\ \hline
+梯度变化剧烈程度         & 全局固定 $L$  & 依赖当前位置梯度：$L_0 + L_1 \|\nabla f(x)\|$   \\
+严格程度          & 要求梯度变化一致有界  & 允许梯度变化与当前位置相关 \\
+强弱关系 & 更强 & 更弱 \\
+\hline
+\end{tabular}\label{tabela01}
+\end{table}
+
+\subsection{严格程度}
+
+$(L_0, L_1)$-smoothness 是比 L-smoothness 更弱、更宽松的条件，因为其允许梯度在一定情况下变化可以较快，但是 L-smoothness 强制要求梯度变化必须保持缓慢，以下是一个详细证明。
+
+若 $f$ 是 L-smooth，则对于 $\|\nabla f(x) - \nabla f(y)\| \leq L \|x - y\|$ 取 $L_0 = L$, $L_1 = 0$，显然满足$\|\nabla f(x) - \nabla f(y)\| \leq (L_0 + L_1 \|\nabla f(x)\|) \|x - y\|$，即 $(L_0, L_1)$-smoothness。
+
+
+反之，存在函数满足 $(L_0, L_1)$-smoothness 但不满足任何 L-smoothness。例如，考虑 $f(x) = e^x$ 在 $x\in \mathbb{R}$ 时，其梯度为 $e^x$，也是 $e^x$，无全局上界，故不存在 $L$ 使得$\|\nabla f(x) - \nabla f(y)\| \leq L \|x - y\|$，因而它是非 L-smooth 的。但可验证其满足 $(0, 1)$-smoothness，因为
+$$
+|f'(x) - f'(y)| = |e^x - e^y| \leq e^{\max(x,y)} |x - y| \leq (\underbrace{0}_{L_0} + \underbrace{1}_{L_1} \cdot |f'(x)|) |x - y|.
+$$
+
+因此，L-smoothness $\Rightarrow$ $(L, 0)$-smoothness，但逆命题不成立。  
+所以，$(L_0, L_1)$-smoothness 是比 L-smoothness 更弱、更宽松的条件。
+
+
+
+\section{问题三：文章的不足和前景}
+
+\section{模板留档}
+
+
+Equações inseridas no trabalho completo devem ser enumeradas sequencialmente e à direita no texto, por exemplo
+\begin{equation}
+\frac{\partial u}{\partial t}-\Delta u = f, \quad  \mathrm{em} \; \Omega. \label{Calor}
+\end{equation}
+Consulte o arquivo \verb!.tex! para mais detalhes sobre o código-fonte gerador da equação \eqref{Calor}.
+
+As(os) autoras(es) podem inserir figuras e tabelas no artigo. Elas devem estar dispostas próximas de suas referências no texto.
+
+\subsection{表格示例}
+
+A inserção de tabela deve ser feita com o ambiente \verb!table!, sendo enumerada, disposta horizontalmente centralizada, próxima de sua referência no texto, e a legenda imediatamente acima dela. Por exemplo, consulte a Tabela \ref{tabela01}.
+
+\begin{table}[H]
+\caption{ {\small Categorias dos trabalhos.}}
+\centering
+\begin{tabular}{ccc}
+\hline
+Categoria do trabalho  & Número de páginas & Tipo do trabalho\\ \hline
+1          & 2  & $A$, $B$ e $C$    \\
+2          & entre 5 e 7  & apenas $C$ \\
+\hline
+\end{tabular}\label{tabela01}
+\end{table}
+
+\subsection{Inserção de Figuras}
+
+A inserção de figura deve ser feita com o ambiente \verb!figure!, ela deve estar enumerada, disposta horizontalmente centralizada, próxima de sua referência no texto, e legenda imediatamente abaixo da mesma. \emph{Deve-se indicar/referências a fonte, mesmo quando de autoria própria.} Por exemplo, consulte a Figura \ref{figura01}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.7\textwidth]{ex_fig}
+\caption{ {\small Exemplo de imagem. Fonte: indicar.}}
+\label{figura01}
+\end{figure}
+
+\section{Sobre as Referências Bibliográficas}
+
+As referências bibliográficas devem ser inseridas conforme especificado neste padrão, as quais serão automaticamente geradas em ordem alfabética pelo sobrenome do primeiro autor. Este {\it template} fornece suporte para a inserção de referências bibliográficas com o Bib\LaTeX{}. Os dados de cada referência do trabalho devem ser adicionados no arquivo \verb+refs.bib+ e a indicação da referência no texto deve ser inserida com o comando \verb+\cite+. Seguem alguns exemplos de referências: livro \cite{Boldrini}, artigos publicados em periódicos \cite{Contiero,Cuminato}, capítulo de livro \cite{daSilva}, dissertação de mestrado \cite{Diniz}, tese de doutorado \cite{Mallet}, livro publicado dentro de uma série \cite{Gomes}, trabalho publicado em anais de eventos \cite{Santos}, {\it website} e outros \cite{CNMAC}. Por padrão, os nomes de todos os autores da obra citada aparecem na bibliografia. Para obras com mais de três autores, é também possível indicar apenas o nome do primeiro autor, seguido da expressão et al. Para implementar essa alternativa, basta remover ``\verb+,maxnames=50+'' do comando correspondente do código-fonte. Sempre que disponível forneça o DOI, ISBN ou ISSN, conforme o caso.
+
+\section{Considerações Finais}
+
+Esta seção é reservada às principais conclusões e considerações finais do trabalho.
+
+\section*{Agradecimentos (opcional)}
+
+Seção reservada aos agradecimentos dos autores, caso for pertinente. Por exemplo, agradecimento a fomentos. Se os autores optarem pela inclusão de Agradecimentos, a palavra ``(opcional)'' deve ser removida do título da seção. Esta seção não é numerada e deve ser disposta entre a última seção do corpo do texto e as Referências.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% REFS BIBLIOGRÁFICAS
+% POR FAVOR, NÃO ALTERAR
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\printbibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+
+
+
+
