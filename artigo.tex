@@ -80,11 +80,31 @@
 
 \section{问题一：论文解决的问题}
 
-本论文试图填补的缺口是：在 $(L_0, L_1)$-smoothness 的光滑条件下，为常见优化算法建立新的线性收敛理论，并解释实际机器学习训练中常见的收敛行为。具体的来说包含以下贡献：
 
+\subsection{更优秀的梯度下降法分析}
 
-\subsection{}
+过去的论文在凸性和 $(L_0, L_1)$-smoothness 假设下的研究要么依赖于更严格的假设，如Koloskova 等研究者的成果依赖于一个额外的 $L$-smooth 条件，Takezawa 等研究者的成果要求梯度下降带 Polyak 步长；要么分析结果过于粗糙，如 Li 等研究者的分析结果依赖一个可能很大的常数；要么对于收敛速率研究不够细致，例如Gorbunov 和 Vankov 等研究者没有研究梯度下降刚开始时的线性收敛。
 
+论文改进了现有对 $(L_0, L_1)$-GD、NGD 和 Clip-GD 在凸性和 $(L_0, L_1)$-smoothness 假设下的收敛性分析。
+展示了在凸性和 $(L_0, L_1)$-smoothness 假设下，
+这些方法在初始优化阶段（即当 $\|\nabla f(x^{k})\| \geq \frac{L_0}{L_1}$ 时）
+无需任何额外假设即可实现线性收敛；
+随着迭代接近最优解，收敛速度逐渐转为次线性。
+特别地，对于 NGD，当 $\|\nabla f(x^{k})\| \geq c$ 时，
+仍保持线性收敛。论文提供的 表~1 明确给出了 Clip-GD 线性收敛的条件：
+其中 $\lambda_k = 1$ 对应 GD 的情形，
+$\lambda_k = \frac{c}{\|\nabla f(x^{k})\|}$ 对应 NGD 的情形。
+
+\subsection{对于 RCD 和 OrderRCD 方法的首次分析}
+论文首次为随机坐标下降方法（RCD）及 OrderRCD 在凸性和
+ $(L_0, L_1)$-coordinate smoothness 假设下提供了收敛性分析。
+ 结果表明，这两种方法同样展现出与 full-gradient 方法类似的“先线性、
+ 后次线性”的收敛现象。
+
+\subsection{Extension to the strongly convex case}
+此外，论文还将 $(L_0, L_1)$-GD 的分析推广至目标函数满足
+ $\mu$-strongly convex 的情形，
+ 进一步拓展了该类非标准光滑条件下的优化理论。
 
 \section{问题二：文章的假设条件}
 
@@ -139,6 +159,11 @@ $$
 
 
 \section{问题三：文章的不足和前景}
+
+\subsection{假设过于严格造成的应用范围狭窄}
+
+文中自己提到，学界和工业界大多都集中于研究更普适的非全局凸函数，但是本文的研究均是全局凸函数的情形，因此其应用范围有限。
+
 
 \section{模板留档}
 
