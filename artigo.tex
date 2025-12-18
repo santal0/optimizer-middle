@@ -90,18 +90,43 @@
 这些方法在初始优化阶段（即当 $\|\nabla f(x^{k})\| \geq \frac{L_0}{L_1}$ 时）
 无需任何额外假设即可实现线性收敛；
 随着迭代接近最优解，收敛速度逐渐转为次线性。
+
 特别地，对于 NGD，当 $\|\nabla f(x^{k})\| \geq c$ 时，
 仍保持线性收敛。论文提供的 表~1 明确给出了 Clip-GD 线性收敛的条件：
 其中 $\lambda_k = 1$ 对应 GD 的情形，
 $\lambda_k = \frac{c}{\|\nabla f(x^{k})\|}$ 对应 NGD 的情形。
 
-\subsection{对于 RCD 和 OrderRCD 方法的首次分析}
-论文首次为随机坐标下降方法（RCD）及 OrderRCD 在凸性和
+
+\begin{enumerate}
+
+    \item 梯度下降（GD）：当梯度范数$\|\nabla f(x^k)\| \geq \frac{L_0}{L_1}$时，
+    算法以线性速率收敛，
+    满足 $f(x^N) - f^* \leq \left(1 - \frac{1}{4L_1 R}\right)^N F_0$
+    （$F_0 = f(x^0) - f^*$，
+    $R = \|x^0 - x^*\|$）。当梯度范数 $ \|\nabla f(x^k)\| < \frac{L_0}{L_1}$ 时，收敛速率退化为标准次线性，满足 $f(x^N) - f^* < \frac{4L_0 R^2}{N-T}$（T 是首次进入次线性阶段的迭代次数）。
+
+    
+    \item 归一化梯度下降（NGD）：
+    
+    \item 
+
+
+\end{enumerate}
+
+
+
+
+
+\subsection{对于 RCD 和 OrderRCD 方法的收敛性分析扩展}
+
+过去的论文对于 RCD 的分析集中于 L-smoothness 假设，而对于 OrderRCD 方法，则没有给出任何分析。
+
+论文首次为随机坐标下降方法 RCD 及 OrderRCD 在凸性和
  $(L_0, L_1)$-coordinate smoothness 假设下提供了收敛性分析。
  结果表明，这两种方法同样展现出与 full-gradient 方法类似的“先线性、
  后次线性”的收敛现象。
 
-\subsection{Extension to the strongly convex case}
+\subsection{强凸条件下的推广}
 此外，论文还将 $(L_0, L_1)$-GD 的分析推广至目标函数满足
  $\mu$-strongly convex 的情形，
  进一步拓展了该类非标准光滑条件下的优化理论。
@@ -160,9 +185,31 @@ $$
 
 \section{问题三：文章的不足和前景}
 
-\subsection{假设过于严格造成的应用范围狭窄}
+\subsection{文章不足}
+
+
+\subsubsection{假设过于严格造成的应用范围狭窄}
 
 文中自己提到，学界和工业界大多都集中于研究更普适的非全局凸函数，但是本文的研究均是全局凸函数的情形，因此其应用范围有限。
+
+\subsubsection{分析细致程度有提升空间}
+
+“线性收敛”仅在梯度超过阈值时成立，非全局性质，只在：$\|\nabla f(x_k)\| \ge L_0/L_1$
+阶段有效。分析结果中，当靠近最优解时，主导收敛部分为次线性的 $O(1/N)$，仍有进一步改进的空间。
+
+\subsubsection{没有解决前人收敛速度过于宽松的问题}
+
+收敛因子涉及 $1 - \frac{1}{4 L_1 R}$ 此处 R 是初始点到最优点的距离。在高维或数据规模大时，R 常非常大，导致收敛因子接近于 1，线性收敛速度非常慢。
+
+\subsection{文章意义}
+
+\subsubsection{有助于解释实际现象}
+
+解释现实机器学习中“初期快速下降”的普遍现象
+
+\subsubsection{有助于梯度下降算法变式的优化}
+
+例如，如何选择 clipping 半径；clipping 如何影响收敛速度；clipping 是否阻碍早期快速下降。
 
 
 \section{模板留档}
