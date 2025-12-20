@@ -99,16 +99,23 @@ $\lambda_k = \frac{c}{\|\nabla f(x^{k})\|}$ 对应 NGD 的情形。
 
 \begin{enumerate}
 
-    \item 梯度下降（GD）：当梯度范数$\|\nabla f(x^k)\| \geq \frac{L_0}{L_1}$时，
+    \item 梯度下降（GD）：\(x^{k+1} = x^k - \eta_k \nabla f(x^k)\)，其中步长\(\eta_k = \frac{1}{L_0 + L_1\|\nabla f(x^k)\|}\)。当梯度范数$\|\nabla f(x^k)\| \geq \frac{L_0}{L_1}$时，
     算法以线性速率收敛，
     满足 $f(x^N) - f^* \leq \left(1 - \frac{1}{4L_1 R}\right)^N F_0$
     （$F_0 = f(x^0) - f^*$，
     $R = \|x^0 - x^*\|$）。当梯度范数 $ \|\nabla f(x^k)\| < \frac{L_0}{L_1}$ 时，收敛速率退化为标准次线性，满足 $f(x^N) - f^* < \frac{4L_0 R^2}{N-T}$（T 是首次进入次线性阶段的迭代次数）。
 
     
-    \item 归一化梯度下降（NGD）：
+    \item 归一化梯度下降（NGD）：\(x^{k+1} = x^k - \eta_k \cdot \frac{\nabla f(x^k)}{\|\nabla f(x^k)\|}\)，
+    步长\(\eta_k = \eta \leq \frac{c}{L_0 + L_1 c}\)（c是梯度范数下界，即\(\|\nabla f(x^k)\| \geq c\)）。
+    可以实现线性收敛 \(f(x^N) - f^* \leq \left(1 - \frac{\eta}{2R}\right)^N F_0\)。
+    只要梯度范数不小于c（前期迭代满足），就能保持线性收敛；若\(c < \frac{L_0}{L_1}\)，则收敛速率会下降，且最终精度受c限制
     
-    \item 
+    \item  裁剪梯度下降（Clip-GD）：\(x^{k+1} = x^k - \eta_k \cdot clip_c(\nabla f(x^k))\)，
+    其中裁剪操作\(clip_c(\nabla f(x^k)) = \min\left\{1, \frac{c}{\|\nabla f(x^k)\|}\right\} \nabla f(x^k)\)，
+    步长\(\eta_k = \frac{1}{L_0 + L_1 \cdot \min\{\|\nabla f(x^k)\|, c\}}\)。
+    收敛速率满足\(f(x^N) - f^* = \mathcal{O}\left(\min\left\{\frac{L_0 R^2}{N-T}, \left(1 - \frac{\rho}{R}\right)^T F_0\right\}\right)\)
+    （\(\rho = \frac{c}{\max\{L_0, L_1 c\}}\)）。梯度大于c时，按 NGD 模式；梯度小于c时，按 GD 模式。若\(c \geq \frac{L_0}{L_1}\)，前期线性收敛速率与 GD 一致；若\(c < \frac{L_0}{L_1}\)，前期线性收敛速率略低。
 
 
 \end{enumerate}
@@ -197,7 +204,7 @@ $$
 “线性收敛”仅在梯度超过阈值时成立，非全局性质，只在：$\|\nabla f(x_k)\| \ge L_0/L_1$
 阶段有效。分析结果中，当靠近最优解时，主导收敛部分为次线性的 $O(1/N)$，仍有进一步改进的空间。
 
-\subsubsection{没有解决前人收敛速度过于宽松的问题}
+\subsubsection{没有解决收敛速度过于宽松的问题}
 
 收敛因子涉及 $1 - \frac{1}{4 L_1 R}$ 此处 R 是初始点到最优点的距离。在高维或数据规模大时，R 常非常大，导致收敛因子接近于 1，线性收敛速度非常慢。
 
