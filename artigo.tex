@@ -126,12 +126,24 @@ $\lambda_k = \frac{c}{\|\nabla f(x^{k})\|}$ 对应 NGD 的情形。
 
 \subsection{对于 RCD 和 OrderRCD 方法的收敛性分析扩展}
 
-过去的论文对于 RCD 的分析集中于 L-smoothness 假设，而对于 OrderRCD 方法，则没有给出任何分析。
+过去的论文对于坐标下降类方法 RCD 的分析集中于 L-smoothness 假设，而对于 OrderRCD 方法，则没有给出任何分析。
 
 论文首次为随机坐标下降方法 RCD 及 OrderRCD 在凸性和
- $(L_0, L_1)$-coordinate smoothness 假设下提供了收敛性分析。
- 结果表明，这两种方法同样展现出与 full-gradient 方法类似的“先线性、
- 后次线性”的收敛现象。
+$(L_0, L_1)$-coordinate smoothness 假设下提供了收敛性分析。
+结果表明，这两种方法同样展现出与 full-gradient 方法类似的“先线性、
+后次线性”的收敛现象。
+
+\begin{enumerate}
+    \item RCD：当多数坐标的梯度范数 \(\geq  L_0/L_1\)时，
+    期望误差满足\(\mathbb{E}[f(x^N)] - f^* = \mathcal{O}\left(\left(1 - \frac{\rho}{d R}\right)^N F_0\right)\)
+    （\(\rho = 1/(4\sqrt{2}L_1)\)，d为维度，\(F_0 = f(x^0)-f^*\)）。
+    当梯度接近最优解时，误差退化为\(\mathcal{O}\left(\frac{d L_0 R^2}{N}\right)\)。
+    当\(L_0=0\)（强增长条件）时，可线性收敛到任意精度，迭代次数仅需\(O(d L_1 R \log \frac{F_0}{\varepsilon})\)，
+    显著优于传统坐标下降在固定光滑性下的复杂度。
+    \item OrderRCD：具有与 RCD 完全一致的收敛速率 ——\(\mathbb{E}[f(x^N)] - f^* = \mathcal{O}\left(\max\left\{\left(1 - \frac{\rho}{d R}\right)^N F_0, \frac{d L_0 R^2}{N}\right\}\right)\)。
+\end{enumerate}
+
+
 
 \subsection{强凸条件下的推广}
 此外，论文还将 $(L_0, L_1)$-GD 的分析推广至目标函数满足
@@ -194,17 +206,24 @@ $$
 
 \subsection{文章不足}
 
+\subsubsection{应用前景层面}
 
-\subsubsection{假设过于严格造成的应用范围狭窄}
+\subsubsubsection{假设过于严格造成的应用范围狭窄}
 
 文中自己提到，学界和工业界大多都集中于研究更普适的非全局凸函数，但是本文的研究均是全局凸函数的情形，因此其应用范围有限。
 
-\subsubsection{分析细致程度有提升空间}
+\subsubsubsection{没有讨论其他类型的优化问题}
+
+在机器学习领域常用的优化器如 adam 方法相较于文章模型更加复杂，因而本文分析只能适用于较为狭窄的研究方向。
+
+\subsubsection{分析结果层面}
+
+\subsubsubsection{分析细致程度有提升空间}
 
 “线性收敛”仅在梯度超过阈值时成立，非全局性质，只在：$\|\nabla f(x_k)\| \ge L_0/L_1$
 阶段有效。分析结果中，当靠近最优解时，主导收敛部分为次线性的 $O(1/N)$，仍有进一步改进的空间。
 
-\subsubsection{没有解决收敛速度过于宽松的问题}
+\subsubsubsection{没有解决收敛速度过于宽松的问题}
 
 收敛因子涉及 $1 - \frac{1}{4 L_1 R}$ 此处 R 是初始点到最优点的距离。在高维或数据规模大时，R 常非常大，导致收敛因子接近于 1，线性收敛速度非常慢。
 
@@ -218,6 +237,12 @@ $$
 
 例如，如何选择 clipping 半径；clipping 如何影响收敛速度；clipping 是否阻碍早期快速下降。
 
+
+\subsubsection{工程运用层面}
+
+\subsubsubsection{工程实现层面}
+
+对于部分对参数同时调节要求不高，对于反应速度较为看重的应用场景，文章的分析结果的梯度下降和坐标下降可以为这些垂域提供重要理论支撑。
 
 \section{模板留档}
 
