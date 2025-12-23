@@ -61,7 +61,7 @@
 \title{《Linear Convergence Rate in Convex Setup is Possible!》一文的问题回答}
 
 \author{
-{\large 姓名学号}\\ {\large 姓名学号}\\  {\large 姓名学号}\\   
+{\large 姓名学号}\\ {\large 姓名学号}\\  {\large 李文耀 3230102302}\\   
 }
 \criartitulo
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -72,10 +72,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-{\bf Resumo}. Este é o padrão (formato \LaTeX{} apenas) para a submissão de trabalhos da Categoria 2 do CNMAC, destinados à divulgação de pesquisas com resultados conclusivos. \emph{Nesta categoria, os trabalhos devem ser submetidos em Português ou Inglês, em forma de artigo com no mínimo 5 e no máximo 7 páginas, incluindo-se as referências bibliográficas.} Os \emph{trabalhos submetidos} que \emph{não estiverem de acordo com o formato} apresentado por esse padrão \emph{serão rejeitados} pelo Comitê Editorial do evento, sem análise do mérito científico.  
+{\bf 概述}. 我们由三人组队，回答了以下三个问题。
 
-\noindent
-{\bf Palavras-chave}. Instruções, \LaTeX, Trabalhos Completos, SBMAC, CNMAC  (entre 3-6 palavras-chave)
+
 \end{abstract}
 
 \section{问题一：论文解决的问题}
@@ -83,66 +82,26 @@
 
 \subsection{更优秀的梯度下降法分析}
 
-过去的论文在凸性和 $(L_0, L_1)$-smoothness 假设下的研究要么依赖于更严格的假设，如Koloskova 等研究者的成果依赖于一个额外的 $L$-smooth 条件，Takezawa 等研究者的成果要求梯度下降带 Polyak 步长；要么分析结果过于粗糙，如 Li 等研究者的分析结果依赖一个可能很大的常数；要么对于收敛速率研究不够细致，例如Gorbunov 和 Vankov 等研究者没有研究梯度下降刚开始时的线性收敛。
+过去的研究要么依赖于更严格的假设，如依赖于一个额外的 $L$-smooth 条件、要求梯度下降带 Polyak 步长；要么分析结果过于粗糙，如分析结果依赖一个可能很大的常数；要么对于收敛速率研究不够细致，例如没有研究梯度下降刚开始时的线性收敛。
 
 论文改进了现有对 $(L_0, L_1)$-GD、NGD 和 Clip-GD 在凸性和 $(L_0, L_1)$-smoothness 假设下的收敛性分析。
-展示了在凸性和 $(L_0, L_1)$-smoothness 假设下，
 这些方法在初始优化阶段（即当 $\|\nabla f(x^{k})\| \geq \frac{L_0}{L_1}$ 时）
-无需任何额外假设即可实现线性收敛；
-随着迭代接近最优解，收敛速度逐渐转为次线性。
+无需任何额外假设即可实现线性收敛；随着迭代接近最优解，收敛速度逐渐转为次线性。
 
 特别地，对于 NGD，当 $\|\nabla f(x^{k})\| \geq c$ 时，
-仍保持线性收敛。论文提供的 表~1 明确给出了 Clip-GD 线性收敛的条件：
+仍保持线性收敛。论文提供表格给出了 Clip-GD 线性收敛的条件：
 其中 $\lambda_k = 1$ 对应 GD 的情形，
 $\lambda_k = \frac{c}{\|\nabla f(x^{k})\|}$ 对应 NGD 的情形。
-
-
-\begin{enumerate}
-
-    \item 梯度下降（GD）：\(x^{k+1} = x^k - \eta_k \nabla f(x^k)\)，其中步长\(\eta_k = \frac{1}{L_0 + L_1\|\nabla f(x^k)\|}\)。当梯度范数$\|\nabla f(x^k)\| \geq \frac{L_0}{L_1}$时，
-    算法以线性速率收敛，
-    满足 $f(x^N) - f^* \leq \left(1 - \frac{1}{4L_1 R}\right)^N F_0$
-    （$F_0 = f(x^0) - f^*$，
-    $R = \|x^0 - x^*\|$）。当梯度范数 $ \|\nabla f(x^k)\| < \frac{L_0}{L_1}$ 时，收敛速率退化为标准次线性，满足 $f(x^N) - f^* < \frac{4L_0 R^2}{N-T}$（T 是首次进入次线性阶段的迭代次数）。
-
-    
-    \item 归一化梯度下降（NGD）：\(x^{k+1} = x^k - \eta_k \cdot \frac{\nabla f(x^k)}{\|\nabla f(x^k)\|}\)，
-    步长\(\eta_k = \eta \leq \frac{c}{L_0 + L_1 c}\)（c是梯度范数下界，即\(\|\nabla f(x^k)\| \geq c\)）。
-    可以实现线性收敛 \(f(x^N) - f^* \leq \left(1 - \frac{\eta}{2R}\right)^N F_0\)。
-    只要梯度范数不小于c（前期迭代满足），就能保持线性收敛；若\(c < \frac{L_0}{L_1}\)，则收敛速率会下降，且最终精度受c限制
-    
-    \item  裁剪梯度下降（Clip-GD）：\(x^{k+1} = x^k - \eta_k \cdot clip_c(\nabla f(x^k))\)，
-    其中裁剪操作\(clip_c(\nabla f(x^k)) = \min\left\{1, \frac{c}{\|\nabla f(x^k)\|}\right\} \nabla f(x^k)\)，
-    步长\(\eta_k = \frac{1}{L_0 + L_1 \cdot \min\{\|\nabla f(x^k)\|, c\}}\)。
-    收敛速率满足\(f(x^N) - f^* = \mathcal{O}\left(\min\left\{\frac{L_0 R^2}{N-T}, \left(1 - \frac{\rho}{R}\right)^T F_0\right\}\right)\)
-    （\(\rho = \frac{c}{\max\{L_0, L_1 c\}}\)）。梯度大于c时，按 NGD 模式；梯度小于c时，按 GD 模式。若\(c \geq \frac{L_0}{L_1}\)，前期线性收敛速率与 GD 一致；若\(c < \frac{L_0}{L_1}\)，前期线性收敛速率略低。
-
-
-\end{enumerate}
-
-
 
 
 
 \subsection{对于 RCD 和 OrderRCD 方法的收敛性分析扩展}
 
-过去的论文对于坐标下降类方法 RCD 的分析集中于 L-smoothness 假设，而对于 OrderRCD 方法，则没有给出任何分析。
 
 论文首次为随机坐标下降方法 RCD 及 OrderRCD 在凸性和
 $(L_0, L_1)$-coordinate smoothness 假设下提供了收敛性分析。
 结果表明，这两种方法同样展现出与 full-gradient 方法类似的“先线性、
 后次线性”的收敛现象。
-
-\begin{enumerate}
-    \item RCD：当多数坐标的梯度范数 \(\geq  L_0/L_1\)时，
-    期望误差满足\(\mathbb{E}[f(x^N)] - f^* = \mathcal{O}\left(\left(1 - \frac{\rho}{d R}\right)^N F_0\right)\)
-    （\(\rho = 1/(4\sqrt{2}L_1)\)，d为维度，\(F_0 = f(x^0)-f^*\)）。
-    当梯度接近最优解时，误差退化为\(\mathcal{O}\left(\frac{d L_0 R^2}{N}\right)\)。
-    当\(L_0=0\)（强增长条件）时，可线性收敛到任意精度，迭代次数仅需\(O(d L_1 R \log \frac{F_0}{\varepsilon})\)，
-    显著优于传统坐标下降在固定光滑性下的复杂度。
-    \item OrderRCD：具有与 RCD 完全一致的收敛速率 ——\(\mathbb{E}[f(x^N)] - f^* = \mathcal{O}\left(\max\left\{\left(1 - \frac{\rho}{d R}\right)^N F_0, \frac{d L_0 R^2}{N}\right\}\right)\)。
-\end{enumerate}
-
 
 
 \subsection{强凸条件下的推广}
@@ -187,7 +146,7 @@ $$
 
 \subsection{严格程度}
 
-$(L_0, L_1)$-smoothness 是比 L-smoothness 更弱、更宽松的条件，因为其允许梯度在一定情况下变化可以较快，但是 L-smoothness 强制要求梯度变化必须保持缓慢，以下是一个详细证明。
+$(L_0, L_1)$-smoothness 是比 L-smoothness 更弱、更宽松的条件，因为其允许梯度在一定情况下变化可以较快，但是 L-smoothness 强制要求梯度变化必须保持缓慢。
 
 若 $f$ 是 L-smooth，则对于 $\|\nabla f(x) - \nabla f(y)\| \leq L \|x - y\|$ 取 $L_0 = L$, $L_1 = 0$，显然满足$\|\nabla f(x) - \nabla f(y)\| \leq (L_0 + L_1 \|\nabla f(x)\|) \|x - y\|$，即 $(L_0, L_1)$-smoothness。
 
@@ -196,9 +155,6 @@ $(L_0, L_1)$-smoothness 是比 L-smoothness 更弱、更宽松的条件，因为
 $$
 |f'(x) - f'(y)| = |e^x - e^y| \leq e^{\max(x,y)} |x - y| \leq (\underbrace{0}_{L_0} + \underbrace{1}_{L_1} \cdot |f'(x)|) |x - y|.
 $$
-
-因此，L-smoothness $\Rightarrow$ $(L, 0)$-smoothness，但逆命题不成立。  
-所以，$(L_0, L_1)$-smoothness 是比 L-smoothness 更弱、更宽松的条件。
 
 
 
@@ -244,28 +200,6 @@ $$
 
 对于部分对参数同时调节要求不高，对于反应速度较为看重的应用场景，文章的分析结果的梯度下降和坐标下降可以为这些垂域提供重要理论支撑。
 
-\section{模板留档}
-
-\subsection{表格示例}
-
-\begin{table}[H]
-\caption{ {\small Categorias dos trabalhos.}}
-\centering
-\begin{tabular}{ccc}
-\hline
-Categoria do trabalho  & Número de páginas & Tipo do trabalho\\ \hline
-1          & 2  & $A$, $B$ e $C$    \\
-2          & entre 5 e 7  & apenas $C$ \\
-\hline
-\end{tabular}\label{tabela01}
-\end{table}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=.7\textwidth]{ex_fig}
-\caption{ {\small Exemplo de imagem. Fonte: indicar.}}
-\label{figura01}
-\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % REFS BIBLIOGRÁFICAS
